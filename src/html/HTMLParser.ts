@@ -9,9 +9,10 @@ import { JSONContent } from '../types';
  * Converts HTML Element or string to JSON
  * @param element The HTML string or element to convert to JSON.
  * @param json A boolean to indicate if the output should be a JSON string.
+ * @param mimeType An optional string mimetype for DOMParser.
  * @returns {Promise<JSONContent | string>}
  */
-async function HTMLParser(element: Element | string, json = false): Promise<JSONContent | string> {
+async function HTMLParser(element: Element | string, json = false, mimeType: string = 'text/xml'): Promise<JSONContent | string> {
   return await new Promise((resolve, reject) => {
     try {
       const treeObject: any = {};
@@ -20,7 +21,7 @@ async function HTMLParser(element: Element | string, json = false): Promise<JSON
       // If string convert to document Node
       if (typeof element === 'string') {
         const parser = new DOMParser();
-        const docNode = parser.parseFromString(element, 'text/xml');
+        const docNode = parser.parseFromString(element, mimeType);
         if (docNode.firstChild) {
           elementToParse = docNode.firstChild as Element;
         }
